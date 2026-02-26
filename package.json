@@ -1,0 +1,32 @@
+{
+  "name": "skill-indexer",
+  "version": "1.2.0",
+  "description": "OpenClaw Skill Registry & Index Manager - Scans, indexes, and manages OpenClaw skills",
+  "main": "lib/skill-indexer.js",
+  "bin": {
+    "skill-indexer": "./bin/skill-indexer.js"
+  },
+  "scripts": {
+    "index": "node bin/skill-indexer.js index",
+    "search": "node bin/skill-indexer.js search",
+    "list": "node bin/skill-indexer.js list",
+    "update-tools": "node bin/skill-indexer.js update-tools",
+    "validate": "node bin/skill-indexer.js validate",
+    "test": "node scripts/test.js"
+  },
+  "keywords": [
+    "openclaw",
+    "skill",
+    "index",
+    "registry",
+    "manager"
+  ],
+  "author": "OpenClaw",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
