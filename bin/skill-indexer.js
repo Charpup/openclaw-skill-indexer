@@ -68,6 +68,14 @@ async function main() {
       await watcher.start();
       break;
       
+    case 'validate':
+      await validateIndex();
+      break;
+      
+    case 'export-hub':
+      await exportHub(args);
+      break;
+      
     case 'help':
     case '--help':
     case '-h':
