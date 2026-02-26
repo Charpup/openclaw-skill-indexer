@@ -53,22 +53,49 @@ skill-indexer export-hub         # Export hub-compatible index
 
 ## MCP Server
 
-skill-indexer can run as an MCP server for integration with AI assistants:
+skill-indexer can run as an MCP server for integration with AI assistants (Claude Code):
 
 ```bash
-# Start MCP server
-skill-indexer mcp-server
+# Build MCP Server (first time)
+cd ~/.openclaw/skills/skill-indexer/mcp-server && npm install && npm run build
 
-# Or via npx
-npx skill-indexer mcp-server
+# Start directly
+node ~/.openclaw/skills/skill-indexer/mcp-server/dist/index.js
+
+# Or use the start script (handles build automatically)
+~/.openclaw/skills/skill-indexer/scripts/start-mcp.sh
 ```
 
-Available MCP tools:
-- `search_skills` - Search skills by keyword
-- `get_skill_info` - Get skill details
-- `list_skills` - List all skills
-- `find_by_trigger` - Find by trigger word
-- `refresh_index` - Refresh index stats
+### Claude Code Registration
+
+Add to `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "skill-indexer": {
+      "command": "node",
+      "args": ["/root/.openclaw/skills/skill-indexer/mcp-server/dist/index.js"]
+    }
+  }
+}
+```
+
+### Available MCP Tools
+
+- `search_skills(query, limit, offset)` - Paginated keyword search
+- `get_skill_info(skill_id)` - Get full skill details
+- `list_skills(type, limit, offset)` - Paginated listing with type filter
+- `find_by_trigger(trigger)` - Find by trigger phrase
+- `refresh_index()` - Get index statistics
+
+## Health Check
+
+Validate your build and index status:
+
+```bash
+node ~/.openclaw/skills/skill-indexer/scripts/check-health.js
+```
 
 ## Programming API
 
@@ -85,6 +112,7 @@ const skill = indexer.getSkill('triadev');
 ## Documentation
 
 - [SKILL.md](SKILL.md) - Skill documentation
+- [GALATEA_GUIDE.md](GALATEA_GUIDE.md) - Galatea integration guide (防止错误配置)
 - [Architecture](references/architecture.md) - System design
 - [API Reference](references/api-reference.md) - Complete API docs
 
