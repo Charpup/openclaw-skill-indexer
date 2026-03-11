@@ -1,22 +1,7 @@
 ---
 name: skill-indexer
-description: OpenClaw Skill Registry and Index Manager. Scans skills, extracts metadata, generates searchable indexes. Triggers on "skill index", "list skills", "search skills", "skill registry", "mcp tools", "skill discovery".
-version: 1.2.0
-metadata:
-  openclaw:
-    emoji: "📚"
-    requires:
-      bins: ["node", "npm"]
-    os: ["linux", "macos", "windows"]
-    install:
-      - id: "npm-install"
-        kind: "shell"
-        command: "cd ~/.openclaw/skills/skill-indexer && npm install"
-        label: "Install Node.js dependencies"
-      - id: "mcp-install"
-        kind: "shell"
-        command: "cd ~/.openclaw/skills/skill-indexer/mcp-server && npm install && npm run build"
-        label: "Build MCP Server"
+description: >-
+  OpenClaw Skill Registry and Index Manager. Scans skills, extracts metadata, generates searchable indexes. Triggers on "skill index", "list skills", "search skills", "skill registry", "mcp tools", "skill discovery".
 ---
 
 # Skill Indexer 📚
