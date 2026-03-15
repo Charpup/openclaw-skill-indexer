@@ -16,6 +16,8 @@ const { SkillIndexer } = require('../lib/skill-indexer');
 
 const execFileAsync = promisify(execFile);
 
+const SUPPRESSED_REPOS = new Set(['Charpup/task-index-manager']);
+
 async function runGitHubWeeklyCheck(argv = process.argv.slice(2)) {
   const apply = argv.includes('--apply');
 
@@ -105,6 +107,16 @@ async function evaluateRepo(repoRoot, { apply }) {
   const originRes = await runGit(repoRoot, ['remote', 'get-url', 'origin']);
   if (!originRes.ok || !originRes.stdout.trim()) {
     return { status: 'no-origin', note: null, applied: false, error: false };
+  }
+
+  const normalized = normalizeGitHubOrigin(originRes.stdout.trim());
+  if (normalized.repoFullName && SUPPRESSED_REPOS.has(normalized.repoFullName)) {
+    return {
+      status: 'no-origin',
+      note: `mapping suppressed for ${normalized.repoFullName}`,
+      applied: false,
+      error: false
+    };
   }
 
   const dirtyRes = await runGit(repoRoot, ['status', '--porcelain']);
@@ -219,6 +231,19 @@ function baseResult(skill, status) {
 
 function compact(text) {
   return (text || '').trim().replace(/\s+/g, ' ').slice(0, 140) || 'unknown error';
+}
+
+function normalizeGitHubOrigin(originUrl) {
+  if (!originUrl) {
+    return { repoFullName: null };
+  }
+
+  const githubMatch = originUrl.match(/github\.com[:/]([^/]+)\/([^/]+?)(?:\.git)?$/i);
+  if (!githubMatch) {
+    return { repoFullName: null };
+  }
+
+  return { repoFullName: `${githubMatch[1]}/${githubMatch[2]}` };
 }
 
 async function runGit(cwd, args) {

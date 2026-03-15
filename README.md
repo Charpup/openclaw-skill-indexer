@@ -84,6 +84,8 @@ Each indexed skill keeps backward-compatible metadata plus optional GitHub mappi
 
 `--apply` only updates safe repos (`clean + behind`) via `git pull --ff-only`.
 
+Note: duplicated/deprecated repos can be suppressed from mapping/checks (current default suppression: `Charpup/task-index-manager`).
+
 ### Weekly Ops Flow (recommended)
 
 ```bash
