@@ -23,6 +23,7 @@ cd ~/.openclaw/skills/skill-indexer
 npm install
 npm run index        # Build index
 npm run update-tools # Update TOOLS.md
+npm run github-check # Weekly git drift check (dry run)
 ```
 
 ## CLI Usage
@@ -47,6 +48,10 @@ skill-indexer update-tools
 
 # Validate index integrity
 skill-indexer validate
+
+# Weekly maintenance check
+skill-indexer github-check
+skill-indexer github-check --apply
 ```
 
 ## MCP Server Integration
@@ -130,9 +135,10 @@ await indexer.updateToolsMd();
 
 1. **Scan** - Discovers SKILL.md files in `~/.openclaw/skills/` and `workspace/skills/`
 2. **Parse** - Extracts metadata from YAML frontmatter (name, description, version, triggers)
-3. **Index** - Builds searchable index with lookup maps
-4. **Store** - Saves to `~/.openclaw/.skill-index.json` with backup rotation
-5. **Export** - Updates TOOLS.md with auto-generated skill catalog
+3. **Map Repo** - Adds best-effort GitHub mapping (`repoUrl`, `repoFullName`, `repoHost`, `repoDefaultBranch`)
+4. **Index** - Builds searchable index with lookup maps
+5. **Store** - Saves to `~/.openclaw/.skill-index.json` with backup rotation
+6. **Export** - Updates TOOLS.md with auto-generated skill catalog
 
 ## Index Format
 
@@ -141,11 +147,31 @@ await indexer.updateToolsMd();
   "version": "1.0.0",
   "generatedAt": "2026-02-26T11:36:56Z",
   "stats": { "total": 13, "system": 13, "workspace": 0 },
-  "skills": [...],
+  "skills": [
+    {
+      "id": "triadev",
+      "repoUrl": "https://github.com/owner/repo",
+      "repoFullName": "owner/repo",
+      "repoHost": "github.com",
+      "repoDefaultBranch": "main"
+    }
+  ],
   "byTrigger": { "search docs": ["docs-rag"] },
   "byKeyword": { "rag": ["docs-rag"] }
 }
 ```
+
+## Weekly GitHub Check
+
+```bash
+# Dry run
+npm run github-check
+
+# Fast-forward safe repos only (clean + behind)
+npm run github-sync
+```
+
+Reported statuses: `up-to-date`, `behind`, `ahead`, `diverged`, `dirty`, `no-git`, `no-origin`.
 
 ## TOOLS.md Integration
 

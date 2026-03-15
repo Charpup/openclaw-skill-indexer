@@ -10,10 +10,12 @@
  *   skill-indexer list           List all skills
  *   skill-indexer update-tools   Update TOOLS.md
  *   skill-indexer validate       Validate index
+ *   skill-indexer github-check   Weekly git status check (use --apply to sync)
  */
 
 const { SkillIndexer } = require('../lib/skill-indexer');
 const { exportHub } = require('../scripts/export-hub');
+const { runGitHubWeeklyCheck } = require('../scripts/github-weekly-check');
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
@@ -75,6 +77,10 @@ async function main() {
     case 'export-hub':
       await exportHub(args);
       break;
+
+    case 'github-check':
+      await runGitHubWeeklyCheck(args);
+      break;
       
     case 'help':
     case '--help':
@@ -115,6 +121,10 @@ function printSkill(skill) {
   console.log(`  Description: ${skill.description.slice(0, 100)}...`);
   console.log(`  Triggers:    ${skill.triggers.join(', ') || 'N/A'}`);
   console.log(`  Keywords:    ${skill.keywords.slice(0, 10).join(', ')}...`);
+  console.log(`  Repo URL:    ${skill.repoUrl || 'N/A'}`);
+  console.log(`  Repo Name:   ${skill.repoFullName || 'N/A'}`);
+  console.log(`  Repo Host:   ${skill.repoHost || 'N/A'}`);
+  console.log(`  Repo Branch: ${skill.repoDefaultBranch || 'N/A'}`);
   console.log(`  Resources:`);
   console.log(`    - Scripts:    ${skill.hasScripts ? '✅' : '❌'}`);
   console.log(`    - References: ${skill.hasReferences ? '✅' : '❌'}`);
@@ -159,6 +169,7 @@ Commands:
   validate                 Validate index integrity
   watch                    Watch mode - auto-reindex on changes
   export-hub [--output=<path>]  Export hub-compatible index
+  github-check [--apply]   Weekly git check (optional ff-only sync)
   help                     Show this help message
 
 Examples:
@@ -167,6 +178,8 @@ Examples:
   skill-indexer info docs-rag
   skill-indexer list --type=system
   skill-indexer update-tools
+  skill-indexer github-check
+  skill-indexer github-check --apply
 `);
 }
 
