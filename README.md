@@ -72,10 +72,30 @@ Each indexed skill keeps backward-compatible metadata plus optional GitHub mappi
 
 `github-check` status values:
 
-- `up-to-date`, `behind`, `ahead`, `diverged`
-- `dirty` (local changes), `no-git`, `no-origin`
+| Status | Meaning |
+|---|---|
+| `up-to-date` | Local and remote are aligned |
+| `behind` | Local branch is behind remote |
+| `ahead` | Local branch has unpushed commits |
+| `diverged` | Local and remote both have unique commits |
+| `dirty` | Working tree has uncommitted changes |
+| `no-git` | Skill folder is not inside a git repo |
+| `no-origin` | Repo has no `origin` remote configured |
 
 `--apply` only updates safe repos (`clean + behind`) via `git pull --ff-only`.
+
+### Weekly Ops Flow (recommended)
+
+```bash
+# 1) report only
+npm run github-check
+
+# 2) optional safe sync
+npm run github-sync
+
+# 3) rebuild index after sync
+npm run index && npm run validate
+```
 
 ## MCP Server
 
