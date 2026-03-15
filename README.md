@@ -12,7 +12,9 @@ OpenClaw Skill Registry & Index Manager - Scans, indexes, and manages OpenClaw s
 - 🔎 **Smart Search** - Search by keywords, triggers, or descriptions
 - 📝 **TOOLS.md Integration** - Auto-updates TOOLS.md with skill catalog
 - 🔄 **Incremental Updates** - SHA256-based change detection
+- 🧭 **Repo Mapping** - Captures GitHub metadata per skill (`repoUrl`, `repoFullName`, `repoHost`, `repoDefaultBranch`)
 - 💾 **Cross-Session Persistence** - Index stored in `~/.openclaw/.skill-index.json`
+- 🗓️ **Weekly GitHub Check** - Dry-run drift detection and optional fast-forward sync
 - 🌐 **MCP Server** - Expose skills as MCP tools for AI assistants
 - 👁️ **Watch Mode** - Auto-reindex on file changes
 - 📦 **Hub Export** - Export skillshare-compatible hub index
@@ -36,6 +38,12 @@ npm run update-tools
 
 # Search for skills
 npm run search -- "docs"
+
+# Weekly GitHub drift check (dry run)
+npm run github-check
+
+# Apply safe fast-forward updates
+npm run github-sync
 ```
 
 ## CLI Usage
@@ -49,7 +57,25 @@ skill-indexer update-tools       # Update TOOLS.md
 skill-indexer validate           # Validate index
 skill-indexer watch              # Watch mode - auto-reindex
 skill-indexer export-hub         # Export hub-compatible index
+skill-indexer github-check       # Weekly check (dry run)
+skill-indexer github-check --apply  # Safe ff-only sync
 ```
+
+## Repo Mapping & Weekly Maintenance
+
+Each indexed skill keeps backward-compatible metadata plus optional GitHub mapping fields:
+
+- `repoUrl` → normalized URL (`https://github.com/owner/repo`)
+- `repoFullName` → `owner/repo`
+- `repoHost` → `github.com` or `null`
+- `repoDefaultBranch` → best effort (`main` / `master` / detected branch / `null`)
+
+`github-check` status values:
+
+- `up-to-date`, `behind`, `ahead`, `diverged`
+- `dirty` (local changes), `no-git`, `no-origin`
+
+`--apply` only updates safe repos (`clean + behind`) via `git pull --ff-only`.
 
 ## MCP Server
 

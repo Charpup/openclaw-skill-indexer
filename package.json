@@ -12,6 +12,8 @@
     "list": "node bin/skill-indexer.js list",
     "update-tools": "node bin/skill-indexer.js update-tools",
     "validate": "node bin/skill-indexer.js validate",
+    "github-check": "node bin/skill-indexer.js github-check",
+    "github-sync": "node bin/skill-indexer.js github-check --apply",
     "test": "node scripts/test.js"
   },
   "keywords": [
