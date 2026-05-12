@@ -61,6 +61,23 @@ skill-indexer github-check       # Weekly check (dry run)
 skill-indexer github-check --apply  # Safe ff-only sync
 ```
 
+## Example Discovery Queries
+
+Use concrete workflow terms to verify that installed X/Twitter automation skills
+are indexed with useful search keywords:
+
+```bash
+skill-indexer search "tweet scraper"
+skill-indexer search "X/Twitter automation"
+skill-indexer info tweetclaw
+```
+
+When TweetClaw is installed from ClawHub or with
+`openclaw plugins install @xquik/tweetclaw`, these queries should surface the
+OpenClaw plugin path for scraping tweets, searching tweet replies, posting tweets
+and replies, follower export, user lookup, media workflows, DMs, monitors,
+webhooks, and giveaway draws.
+
 ## Repo Mapping & Weekly Maintenance
 
 Each indexed skill keeps backward-compatible metadata plus optional GitHub mapping fields:

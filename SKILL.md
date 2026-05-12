@@ -35,9 +35,12 @@ skill-indexer index
 # Search skills by keyword
 skill-indexer search "docs"
 skill-indexer search "task"
+skill-indexer search "tweet scraper"
+skill-indexer search "X/Twitter automation"
 
 # Show detailed skill information
 skill-indexer info triadev
+skill-indexer info tweetclaw
 
 # List all indexed skills
 skill-indexer list
